@@ -3,11 +3,10 @@ package com.yamin.bankingcleanarchitectureexample.domain;
 import com.yamin.bankingcleanarchitectureexample.account.domain.*;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountTest {
     @Test
@@ -20,7 +19,7 @@ class AccountTest {
                 .sourceAccountId(sourceAccount)
                 .targetAccountId(targetAccount)
                 .timeStamp(LocalDateTime.now())
-                .money(BigInteger.valueOf(999L))
+                .money(Money.of(999L))
                 .build();
         Activity activityTwo = Activity.builder()
                 .id(new ActivityId(24L))
@@ -28,18 +27,17 @@ class AccountTest {
                 .sourceAccountId(sourceAccount)
                 .targetAccountId(targetAccount)
                 .timeStamp(LocalDateTime.now())
-                .money(BigInteger.valueOf(1L))
+                .money(Money.of(1L))
                 .build();
         List<Activity> activities = List.of(activityOne, activityTwo);
         Account account = Account.builder()
                 .id(targetAccount)
-                .baselineBalance(BigInteger.valueOf(555L))
+                .baselineBalance(Money.of(555L))
                 .activityWindow(new ActivityWindow(activities)).build();
 
-        BigInteger balance = account.calculateBalance();
+        Money balance = account.calculateBalance();
 
-        assertThat(balance).isEqualTo(1555L);
+        assertThat(balance.amount()).isEqualTo(1555L);
     }
-
 
 }

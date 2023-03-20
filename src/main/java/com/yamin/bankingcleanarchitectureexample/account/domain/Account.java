@@ -1,18 +1,19 @@
 package com.yamin.bankingcleanarchitectureexample.account.domain;
 
-import lombok.*;
-
-import java.math.BigInteger;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
 public class Account {
    private final AccountId id;
-   private final BigInteger baselineBalance;
+   private final Money baselineBalance;
    private final ActivityWindow activityWindow;
 
-   public BigInteger calculateBalance(){
-      return this.baselineBalance.add(activityWindow.calculateBalance(this.id));
+   public Money calculateBalance(){
+      return this.baselineBalance.plus(activityWindow.calculateBalance(this.id));
    }
 }
